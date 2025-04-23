@@ -1,14 +1,40 @@
+# ========== Unity Generated Files ==========
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
 [Ll]ogs/
-UserSettings/
 MemoryCaptures/
+
+# ========== User-Specific Settings ==========
+UserSettings/
+
+# ========== IDE Files ==========
+.vs/
+.vscode/
 *.csproj
 *.sln
 *.user
-.vs/
-.vscode/
+*.suo
+*.svd
+*.booproj
+.idea/
+
+# ========== Build Artifacts ==========
+*.apk
+*.aab
+*.unitypackage
+
+# ========== Crash and Diagnostic Files ==========
+*.stacktrace
+*.dmp
+*.pidb
+
+# ========== OS-Specific Files ==========
 .DS_Store
+._*
+
+# ========== Unity Collaborate or Plastic SCM ==========
+.collabignore
+.PlasticSCM/
