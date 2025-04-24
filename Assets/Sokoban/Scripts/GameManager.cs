@@ -2,46 +2,33 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager Instance { get; private set; }
 
     public bool isFrozen = false;
-    private string message = "";
 
     private void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(gameObject);
-        }
     }
 
-    void Update()
+    public void FreezeGame(bool shouldFreeze)
     {
-        if (isFrozen && Input.GetKeyDown(KeyCode.Space))
-        {
-            isFrozen = false;
-            ClearMap();
-            FindObjectOfType<GridManager>().GenerateRandomGrid();
-        }
+        isFrozen = shouldFreeze;
+        Debug.Log($"Game Frozen: {shouldFreeze}");
     }
 
-    public void FreezeGame(string msg)
+    public void Win()
     {
-        isFrozen = true;
-        message = msg;
-        Debug.Log(message);  // Later replace with UI
+        Debug.Log("🎉 You Win!");
+        FreezeGame(true);
     }
 
-    private void ClearMap()
+    public void Lose()
     {
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Floor")) Destroy(obj);
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Wall")) Destroy(obj);
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Goal")) Destroy(obj);
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Hazard")) Destroy(obj);
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Player")) Destroy(obj);
+        Debug.Log("💀 You Lose!");
+        FreezeGame(true);
     }
 }

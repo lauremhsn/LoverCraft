@@ -2,49 +2,79 @@ using UnityEngine;
 
 public class PlayerGridMovement : MonoBehaviour
 {
-    public float moveTime = 0.2f;
+    public float moveSpeed = 5f;
+
+    private Vector2Int currentGridPos;
     private bool isMoving = false;
+    private Vector3 targetWorldPos;
 
-    void Update()
+    private void Start()
     {
-        if (isMoving || GameManager.Instance.isFrozen) return;
+        currentGridPos = GridManager.Instance.GetPlayerPosition();
+        transform.position = GridToWorldPosition(currentGridPos);
+        targetWorldPos = transform.position;
+    }
 
-        Vector2 input = Vector2.zero;
-
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) input = Vector2.up;
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) input = Vector2.down;
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) input = Vector2.left;
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) input = Vector2.right;
-
-        if (input != Vector2.zero)
+    private void Update()
+    {
+        if (isMoving)
         {
-            Vector3 start = transform.position;
-            Vector3 target = start + (Vector3)input;
-
-            // Wall detection without debug logs
-            RaycastHit2D hit = Physics2D.Raycast(target, Vector2.zero);
-            if (hit.collider != null && hit.collider.CompareTag("Wall"))
+            transform.position = Vector3.MoveTowards(transform.position, targetWorldPos, moveSpeed * Time.deltaTime);
+            if (Vector3.Distance(transform.position, targetWorldPos) < 0.01f)
             {
-                return;
-            }
+                transform.position = targetWorldPos;
+                isMoving = false;
 
-            StartCoroutine(Move(start, target));
+                TileType[,] grid = GridManager.Instance.GetGrid();
+                TileType tile = grid[currentGridPos.x, currentGridPos.y];
+
+                if (tile == TileType.Goal)
+                {
+                    Debug.Log("You Win!");
+                }
+                else if (tile == TileType.Hazard)
+                {
+                    Debug.Log("You Lose!");
+                }
+            }
+            return;
+        }
+
+        Vector2Int input = Vector2Int.zero;
+
+        if (Input.GetKeyDown(KeyCode.W)) input = Vector2Int.up;
+        else if (Input.GetKeyDown(KeyCode.S)) input = Vector2Int.down;
+        else if (Input.GetKeyDown(KeyCode.A)) input = Vector2Int.left;
+        else if (Input.GetKeyDown(KeyCode.D)) input = Vector2Int.right;
+
+        if (input != Vector2Int.zero)
+        {
+            TryMove(input);
         }
     }
 
-    System.Collections.IEnumerator Move(Vector3 start, Vector3 end)
+    private void TryMove(Vector2Int direction)
     {
+        Vector2Int newGridPos = currentGridPos + direction;
+        TileType[,] grid = GridManager.Instance.GetGrid();
+
+        if (newGridPos.x < 0 || newGridPos.x >= grid.GetLength(0) ||
+            newGridPos.y < 0 || newGridPos.y >= grid.GetLength(1))
+            return;
+
+        TileType tile = grid[newGridPos.x, newGridPos.y];
+        if (tile == TileType.Wall)
+            return;
+
+        currentGridPos = newGridPos;
+        targetWorldPos = GridToWorldPosition(currentGridPos);
         isMoving = true;
-        float elapsed = 0;
+    }
 
-        while (elapsed < moveTime)
-        {
-            transform.position = Vector3.Lerp(start, end, elapsed / moveTime);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        transform.position = end;
-        isMoving = false;
+    private Vector3 GridToWorldPosition(Vector2Int gridPos)
+    {
+        int width = GridManager.Instance.GetGrid().GetLength(0);
+        int height = GridManager.Instance.GetGrid().GetLength(1);
+        return new Vector3(gridPos.x - width / 2f + 0.5f, gridPos.y - height / 2f + 0.5f, 0);
     }
 }

@@ -288,15 +288,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aab89cca6bf43d4e9409db83ddf24ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floorPrefab: {fileID: 496912718369522248, guid: 2c98113459fd9b2418d27730e2611f42, type: 3}
-  wallPrefab: {fileID: 3486375202711499393, guid: 40aa64a3357b01d45b4877905479ade3, type: 3}
-  hazardPrefab: {fileID: 7824441876584805546, guid: b185c51f1345d6742a47ae8af8d67fe0, type: 3}
-  goalPrefab: {fileID: 6992318719127164349, guid: 09f6fad2155612741b19d96b1c3a401b, type: 3}
-  playerPrefab: {fileID: 2599890613853562359, guid: 8f76a2ff57a2b6a4fa2650149426a13a, type: 3}
-  width: 15
+  width: 10
   height: 10
-  wallChance: 0.2
-  hazardChance: 0.1
+  innerWallCount: 25
+  tileFloorPrefab: {fileID: 496912718369522248, guid: 2c98113459fd9b2418d27730e2611f42, type: 3}
+  tileWallPrefab: {fileID: 3486375202711499393, guid: 40aa64a3357b01d45b4877905479ade3, type: 3}
+  tileGoalPrefab: {fileID: 6992318719127164349, guid: 09f6fad2155612741b19d96b1c3a401b, type: 3}
+  tileHazardPrefab: {fileID: 7824441876584805546, guid: b185c51f1345d6742a47ae8af8d67fe0, type: 3}
+  playerPrefab: {fileID: 2599890613853562359, guid: 8f76a2ff57a2b6a4fa2650149426a13a, type: 3}
 --- !u!4 &1648777110
 Transform:
   m_ObjectHideFlags: 0
