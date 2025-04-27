@@ -1,8 +1,8 @@
 public enum TileType
 {
     Empty,
-    Floor,
     Wall,
+    Hazard,
     Goal,
-    Hazard
+    Floor
 }
