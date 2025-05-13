@@ -1,73 +1,52 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SignInteraction : MonoBehaviour
 {
     public GameObject signDialogue;
-    public GameObject signBarrier; // NEW: Reference to the separate barrier
-    private bool playerInRange = false;
-    private bool isReadingSign = false;
-    private bool hasReadSign = false;
-    private PlayerMovementFixed playerMovement;
+    public GameObject signBarrier;
+    public PlayerMovementPrologue playerMovement;
 
-    void Start()
-    {
-        playerMovement = FindObjectOfType<PlayerMovementFixed>();
-    }
+    private bool isPlayerNearby = false;
+    private bool hasInteracted = false;
+    private bool isDialogueActive = false;
 
     void Update()
     {
-        if (!hasReadSign)
+        if (isPlayerNearby && !hasInteracted && Input.GetKeyDown(KeyCode.E))
         {
-            if (playerInRange && !isReadingSign && Input.GetKeyDown(KeyCode.E))
-            {
-                signDialogue.SetActive(true);
-                isReadingSign = true;
-                if (playerMovement != null)
-                {
-                    playerMovement.enabled = false;
-                }
-            }
-            else if (isReadingSign && Input.GetKeyDown(KeyCode.Space))
-            {
-                signDialogue.SetActive(false);
-                isReadingSign = false;
-                hasReadSign = true;
+            signDialogue.SetActive(true);
+            playerMovement.enabled = false;
+            isDialogueActive = true;
+        }
 
-                if (playerMovement != null)
-                {
-                    playerMovement.enabled = true;
-                }
+        if (isDialogueActive && Input.GetKeyDown(KeyCode.Space))
+        {
+            signDialogue.SetActive(false);
+            playerMovement.enabled = true;
+            isDialogueActive = false;
+            hasInteracted = true;
 
-                if (signBarrier != null)
-                {
-                    Destroy(signBarrier); // Destroy the barrier GameObject
-                }
+            if (signBarrier != null)
+            {
+                Destroy(signBarrier);
             }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!hasReadSign && collision.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
-            playerInRange = true;
+            isPlayerNearby = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!hasReadSign && collision.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
-            playerInRange = false;
-            if (signDialogue != null && signDialogue.activeInHierarchy)
-            {
-                signDialogue.SetActive(false);
-            }
-            if (playerMovement != null)
-            {
-                playerMovement.enabled = true;
-            }
-            isReadingSign = false;
+            isPlayerNearby = false;
         }
     }
 }

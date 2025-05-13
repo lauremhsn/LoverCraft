@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: de69578c530e24544b5d6d0970b4f7d6
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - player: {instanceID: 0}
+  - playerDialogueBox: {instanceID: 0}
+  - playerDialogueText: {instanceID: 0}
+  - signGuardDialogueBox: {instanceID: 0}
+  - signGuardDialogueText: {instanceID: 0}
+  - castleGuard0DialogueBox: {instanceID: 0}
+  - castleGuard0DialogueText: {instanceID: 0}
+  - castleGuard1DialogueBox: {instanceID: 0}
+  - castleGuard1DialogueText: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
